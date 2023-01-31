@@ -59,11 +59,12 @@ type FT_Glyph_Metrics = struct {
 	vertAdvance: FT_Pos,
 };
 type FT_GlyphSlot = *FT_GlyphSlotRec;
-type FT_Vector = {
+type FT_Vector = struct {
 	x: FT_Pos,
 	y: FT_Pos,
 };
-type FT_GlyphFormat = enum {
+type FT_Glyph_Format = enum {
+	// TODO
 	FT_GLYPH_FORMAT_NONE,
 	FT_GLYPH_FORMAT_COMPOSITE,
 	FT_GLYPH_FORMAT_BITMAP,
@@ -82,6 +83,16 @@ type FT_Bitmap = struct {
 	palette: *void,
 
 };
+type FT_Outline = struct {
+	n_contours: i16,
+	n_points: i16,
+	points: *FT_Vector,
+	tags: *char,
+	contours: *i16,
+	flags: i32,
+};
+type FT_SubGlyph = *void;
+type FT_Slot_Internal = *void;
 type FT_GlyphSlotRec = struct {
 	library: FT_Library,
 	face: FT_Face,
@@ -94,20 +105,19 @@ type FT_GlyphSlotRec = struct {
 	advance: FT_Vector,
 	format: FT_Glyph_Format,
 	bitmap: FT_Bitmap,
-	bitmap_left: FT_Int,
-	bitmap_top: FT_Int,
+	bitmap_left: i32,
+	bitmap_top: i32,
 	outline: FT_Outline,
-	num_subglyphs: FT_UInt,
+	num_subglyphs: u32,
 	subglyphs: FT_SubGlyph,
-	control_data: void*,
+	control_data: *void,
 	control_len: i64,
 	lsb_delta: FT_Pos,
 	rsb_delta: FT_Pos,
 	other: *void,
 	internal: FT_Slot_Internal,
 };
-// TODO: What is FT_LibraryRec?
-type FT_Library = *FT_LibraryRec;
+type FT_Library = *void;
 type FT_Face = *FT_FaceRec;
 type FT_FaceRec = struct {
 	num_faces: i64,
