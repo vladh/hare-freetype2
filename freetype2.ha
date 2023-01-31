@@ -40,7 +40,7 @@ type FT_CharMapRec = struct {
 type FT_Generic_Finalizer = fn(object: *void) void;
 type FT_Generic = struct {
 	data: *void,
-	finalizer: FT_Generic_Finalizer,
+	finalizer: *FT_Generic_Finalizer,
 };
 type FT_BBox = struct {
 	xMin: FT_Pos,
@@ -119,6 +119,47 @@ type FT_GlyphSlotRec = struct {
 };
 type FT_Library = *void;
 type FT_Face = *FT_FaceRec;
+type FT_Driver = *void;
+type FT_Memory = *void;
+type FT_Stream = *FT_StreamRec;
+type FT_StreamDesc = struct {
+	value: i64,
+	pointer: *void,
+};
+type FT_Stream_IoFunc = fn(
+	stream: FT_Stream,
+	offset_: u64,
+	buffer: *char,
+	count: u64
+) u64;
+
+type FT_Stream_CloseFunc = fn(
+	stream: FT_Stream,
+) void;
+type FT_StreamRec = struct {
+	base: *char,
+	sz: u64,
+	pos: u64,
+	descriptor: FT_StreamDesc,
+	pathname: FT_StreamDesc,
+	read: *FT_Stream_IoFunc,
+	close: *FT_Stream_CloseFunc,
+	memory: FT_Memory,
+	cursor: *char,
+	limit: *char,
+};
+type FT_List = *FT_ListRec;
+type FT_ListNode = *FT_ListNodeRec;
+type FT_ListNodeRec = struct {
+	prev: FT_ListNode,
+	next: FT_ListNode,
+	data: *void,
+};
+type FT_ListRec = struct {
+	head: FT_ListNode,
+	tail: FT_ListNode,
+};
+type FT_Face_Internal = *void;
 type FT_FaceRec = struct {
 	num_faces: i64,
 	face_index: i64,
