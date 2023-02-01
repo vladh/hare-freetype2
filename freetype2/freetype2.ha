@@ -238,28 +238,28 @@ export type FT_Face_Flag = enum u64 {
 	FT_FACE_FLAG_SBIX_OVERLAY = 1u64 << 18,
 };
 
-export type FT_Load_Flag = enum u64 {
+export type FT_Load_Flag = enum u32 {
 	FT_LOAD_DEFAULT = 0,
-	FT_LOAD_NO_SCALE = 1u64 << 0,
-	FT_LOAD_NO_HINTING = 1u64 << 1,
-	FT_LOAD_RENDER = 1u64 << 2,
-	FT_LOAD_NO_BITMAP = 1u64 << 3,
-	FT_LOAD_VERTICAL_LAYOUT = 1u64 << 4,
-	FT_LOAD_FORCE_AUTOHINT = 1u64 << 5,
-	FT_LOAD_CROP_BITMAP = 1u64 << 6,
-	FT_LOAD_PEDANTIC = 1u64 << 7,
-	FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1u64 << 9,
-	FT_LOAD_NO_RECURSE = 1u64 << 10,
-	FT_LOAD_IGNORE_TRANSFORM = 1u64 << 11,
-	FT_LOAD_MONOCHROME = 1u64 << 12,
-	FT_LOAD_LINEAR_DESIGN = 1u64 << 13,
-	FT_LOAD_SBITS_ONLY = 1u64 << 14,
-	FT_LOAD_NO_AUTOHINT = 1u64 << 15,
-	FT_LOAD_COLOR = 1u64 << 20,
-	FT_LOAD_COMPUTE_METRICS = 1u64 << 21,
-	FT_LOAD_BITMAP_METRICS_ONLY = 1u64 << 22,
-	FT_LOAD_ADVANCE_ONLY = 1u64 << 8,
-	FT_LOAD_SVG_ONLY = 1u64 << 23,
+	FT_LOAD_NO_SCALE = 1u32 << 0,
+	FT_LOAD_NO_HINTING = 1u32 << 1,
+	FT_LOAD_RENDER = 1u32 << 2,
+	FT_LOAD_NO_BITMAP = 1u32 << 3,
+	FT_LOAD_VERTICAL_LAYOUT = 1u32 << 4,
+	FT_LOAD_FORCE_AUTOHINT = 1u32 << 5,
+	FT_LOAD_CROP_BITMAP = 1u32 << 6,
+	FT_LOAD_PEDANTIC = 1u32 << 7,
+	FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1u32 << 9,
+	FT_LOAD_NO_RECURSE = 1u32 << 10,
+	FT_LOAD_IGNORE_TRANSFORM = 1u32 << 11,
+	FT_LOAD_MONOCHROME = 1u32 << 12,
+	FT_LOAD_LINEAR_DESIGN = 1u32 << 13,
+	FT_LOAD_SBITS_ONLY = 1u32 << 14,
+	FT_LOAD_NO_AUTOHINT = 1u32 << 15,
+	FT_LOAD_COLOR = 1u32 << 20,
+	FT_LOAD_COMPUTE_METRICS = 1u32 << 21,
+	FT_LOAD_BITMAP_METRICS_ONLY = 1u32 << 22,
+	FT_LOAD_ADVANCE_ONLY = 1u32 << 8,
+	FT_LOAD_SVG_ONLY = 1u32 << 23,
 };
 
 export @symbol("FT_Init_FreeType") fn FT_Init_FreeType(
@@ -310,3 +310,14 @@ export @symbol("FT_Render_Glyph") fn FT_Render_Glyph(
 	slot: FT_GlyphSlot,
 	render_mode: FT_Render_Mode,
 ) FT_Error;
+
+export @symbol("FT_Load_Glyph") fn FT_Load_Glyph(
+	face: FT_Face,
+	glyph_index: u32,
+	load_flags: FT_Load_Flag,
+) FT_Error;
+
+export @symbol("FT_Get_Char_Index") fn FT_Get_Char_Index(
+	face: FT_Face,
+	charcode: u64,
+) u32;
