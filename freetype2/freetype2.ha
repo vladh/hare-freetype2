@@ -37,8 +37,8 @@ export type FT_Encoding = enum {
 export type FT_CharMapRec = struct {
 	face: FT_Face,
 	encoding: FT_Encoding,
-	platform_id: u8,
-	encoding_id: u8,
+	platform_id: u16,
+	encoding_id: u16,
 };
 export type FT_Generic_Finalizer = fn(object: nullable *void) void;
 export type FT_Generic = struct {
@@ -100,9 +100,9 @@ export type FT_Bitmap = struct {
 	width: u32,
 	pitch: i32,
 	buffer: *u8,
-	num_grays: u8,
+	num_grays: u16,
 	pixel_mode: u8,
-	palette_mode: char,
+	palette_mode: u8,
 	palette: nullable *void,
 };
 export type FT_Outline = struct {
