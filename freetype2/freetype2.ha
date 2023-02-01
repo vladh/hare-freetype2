@@ -1,14 +1,15 @@
-type FT_Pos = i64;
-type FT_Fixed = i64;
-type FT_Bitmap_Size = struct {
+export type FT_Error = int;
+export type FT_Pos = i64;
+export type FT_Fixed = i64;
+export type FT_Bitmap_Size = struct {
 	height: i8,
 	width: i8,
 	sz: FT_Pos,
 	x_ppem: FT_Pos,
 	y_ppem: FT_Pos,
 };
-type FT_CharMap = *FT_CharMapRec;
-type FT_Encoding = enum {
+export type FT_CharMap = *FT_CharMapRec;
+export type FT_Encoding = enum {
 	// TODO
 	FT_ENCODING_NONE,
 	FT_ENCODING_MS_SYMBOL,
@@ -31,24 +32,24 @@ type FT_Encoding = enum {
 	FT_ENCODING_OLD_LATIN_2,
 	FT_ENCODING_APPLE_ROMAN,
 };
-type FT_CharMapRec = struct {
+export type FT_CharMapRec = struct {
 	face: FT_Face,
 	encoding: FT_Encoding,
 	platform_id: u8,
 	encoding_id: u8,
 };
-type FT_Generic_Finalizer = fn(object: *void) void;
-type FT_Generic = struct {
-	data: *void,
+export type FT_Generic_Finalizer = fn(object: nullable *void) void;
+export type FT_Generic = struct {
+	data: nullable *void,
 	finalizer: *FT_Generic_Finalizer,
 };
-type FT_BBox = struct {
+export type FT_BBox = struct {
 	xMin: FT_Pos,
 	yMin: FT_Pos,
 	xMax: FT_Pos,
 	yMax: FT_Pos,
 };
-type FT_Glyph_Metrics = struct {
+export type FT_Glyph_Metrics = struct {
 	width: FT_Pos,
 	height: FT_Pos,
 	horiBearingX: FT_Pos,
@@ -58,12 +59,12 @@ type FT_Glyph_Metrics = struct {
 	vertBearingY: FT_Pos,
 	vertAdvance: FT_Pos,
 };
-type FT_GlyphSlot = *FT_GlyphSlotRec;
-type FT_Vector = struct {
+export type FT_GlyphSlot = *FT_GlyphSlotRec;
+export type FT_Vector = struct {
 	x: FT_Pos,
 	y: FT_Pos,
 };
-type FT_Glyph_Format = enum {
+export type FT_Glyph_Format = enum {
 	// TODO
 	FT_GLYPH_FORMAT_NONE,
 	FT_GLYPH_FORMAT_COMPOSITE,
@@ -72,7 +73,7 @@ type FT_Glyph_Format = enum {
 	FT_GLYPH_FORMAT_PLOTTER,
 	FT_GLYPH_FORMAT_SVG,
 };
-type FT_Bitmap = struct {
+export type FT_Bitmap = struct {
 	rows: u32,
 	width: u32,
 	pitch: i32,
@@ -80,10 +81,10 @@ type FT_Bitmap = struct {
 	num_grays: u8,
 	pixel_mode: char,
 	palette_mode: char,
-	palette: *void,
+	palette: nullable *void,
 
 };
-type FT_Outline = struct {
+export type FT_Outline = struct {
 	n_contours: i16,
 	n_points: i16,
 	points: *FT_Vector,
@@ -91,9 +92,9 @@ type FT_Outline = struct {
 	contours: *i16,
 	flags: i32,
 };
-type FT_SubGlyph = *void;
-type FT_Slot_Internal = *void;
-type FT_GlyphSlotRec = struct {
+export type FT_SubGlyph = nullable *void;
+export type FT_Slot_Internal = nullable *void;
+export type FT_GlyphSlotRec = struct {
 	library: FT_Library,
 	face: FT_Face,
 	next: FT_GlyphSlot,
@@ -110,33 +111,33 @@ type FT_GlyphSlotRec = struct {
 	outline: FT_Outline,
 	num_subglyphs: u32,
 	subglyphs: FT_SubGlyph,
-	control_data: *void,
+	control_data: nullable *void,
 	control_len: i64,
 	lsb_delta: FT_Pos,
 	rsb_delta: FT_Pos,
-	other: *void,
+	other: nullable *void,
 	internal: FT_Slot_Internal,
 };
-type FT_Library = *void;
-type FT_Face = *FT_FaceRec;
-type FT_Driver = *void;
-type FT_Memory = *void;
-type FT_Stream = *FT_StreamRec;
-type FT_StreamDesc = struct {
+export type FT_Library = nullable *void;
+export type FT_Face = *FT_FaceRec;
+export type FT_Driver = nullable *void;
+export type FT_Memory = nullable *void;
+export type FT_Stream = *FT_StreamRec;
+export type FT_StreamDesc = struct {
 	value: i64,
-	pointer: *void,
+	pointer: nullable *void,
 };
-type FT_Stream_IoFunc = fn(
+export type FT_Stream_IoFunc = fn(
 	stream: FT_Stream,
 	offset_: u64,
 	buffer: *char,
 	count: u64
 ) u64;
 
-type FT_Stream_CloseFunc = fn(
+export type FT_Stream_CloseFunc = fn(
 	stream: FT_Stream,
 ) void;
-type FT_StreamRec = struct {
+export type FT_StreamRec = struct {
 	base: *char,
 	sz: u64,
 	pos: u64,
@@ -148,19 +149,19 @@ type FT_StreamRec = struct {
 	cursor: *char,
 	limit: *char,
 };
-type FT_List = *FT_ListRec;
-type FT_ListNode = *FT_ListNodeRec;
-type FT_ListNodeRec = struct {
+export type FT_List = *FT_ListRec;
+export type FT_ListNode = *FT_ListNodeRec;
+export type FT_ListNodeRec = struct {
 	prev: FT_ListNode,
 	next: FT_ListNode,
-	data: *void,
+	data: nullable *void,
 };
-type FT_ListRec = struct {
+export type FT_ListRec = struct {
 	head: FT_ListNode,
 	tail: FT_ListNode,
 };
-type FT_Face_Internal = *void;
-type FT_FaceRec = struct {
+export type FT_Face_Internal = nullable *void;
+export type FT_FaceRec = struct {
 	num_faces: i64,
 	face_index: i64,
 
@@ -204,7 +205,11 @@ type FT_FaceRec = struct {
 	sizes_list: FT_ListRec,
 
 	autohint: FT_Generic,
-	extensions: *void,
+	extensions: nullable *void,
 
 	internal: FT_Face_Internal,
 };
+
+export @symbol("FT_Init_FreeType") fn FT_Init_FreeType(
+	alibrary: *FT_Library
+) FT_Error;
