@@ -1,3 +1,5 @@
+use strings;
+
 export type FT_Error = int;
 export type FT_Pos = i64;
 export type FT_Fixed = i64;
@@ -8,7 +10,7 @@ export type FT_Bitmap_Size = struct {
 	x_ppem: FT_Pos,
 	y_ppem: FT_Pos,
 };
-export type FT_CharMap = *FT_CharMapRec;
+export type FT_CharMap = nullable *FT_CharMapRec;
 export type FT_Encoding = enum {
 	// TODO
 	FT_ENCODING_NONE,
@@ -59,7 +61,7 @@ export type FT_Glyph_Metrics = struct {
 	vertBearingY: FT_Pos,
 	vertAdvance: FT_Pos,
 };
-export type FT_GlyphSlot = *FT_GlyphSlotRec;
+export type FT_GlyphSlot = nullable *FT_GlyphSlotRec;
 export type FT_Vector = struct {
 	x: FT_Pos,
 	y: FT_Pos,
@@ -119,10 +121,10 @@ export type FT_GlyphSlotRec = struct {
 	internal: FT_Slot_Internal,
 };
 export type FT_Library = nullable *void;
-export type FT_Face = *FT_FaceRec;
+export type FT_Face = nullable *FT_FaceRec;
 export type FT_Driver = nullable *void;
 export type FT_Memory = nullable *void;
-export type FT_Stream = *FT_StreamRec;
+export type FT_Stream = nullable *FT_StreamRec;
 export type FT_StreamDesc = struct {
 	value: i64,
 	pointer: nullable *void,
@@ -149,8 +151,8 @@ export type FT_StreamRec = struct {
 	cursor: *char,
 	limit: *char,
 };
-export type FT_List = *FT_ListRec;
-export type FT_ListNode = *FT_ListNodeRec;
+export type FT_List = nullable *FT_ListRec;
+export type FT_ListNode = nullable *FT_ListNodeRec;
 export type FT_ListNodeRec = struct {
 	prev: FT_ListNode,
 	next: FT_ListNode,
@@ -211,5 +213,28 @@ export type FT_FaceRec = struct {
 };
 
 export @symbol("FT_Init_FreeType") fn FT_Init_FreeType(
-	alibrary: *FT_Library
+	alibrary: *FT_Library,
+) FT_Error;
+
+export @symbol ("FT_Done_FreeType") fn FT_Done_FreeType(
+	library: FT_Library,
+) FT_Error;
+
+@symbol("FT_New_Face") fn _FT_New_Face(
+	library: FT_Library,
+	filepathname: *const char,
+	face_index: i64,
+	aface: *FT_Face,
+) FT_Error;
+export fn FT_New_Face(
+	library: FT_Library,
+	filepathname: str,
+	face_index: i64,
+	aface: *FT_Face,
+) FT_Error = {
+	return _FT_New_Face(library, strings::to_c(filepathname), face_index, aface);
+};
+
+export @symbol ("FT_Done_Face") fn FT_Done_Face(
+	face: FT_Face,
 ) FT_Error;
