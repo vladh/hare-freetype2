@@ -167,8 +167,8 @@ export type FT_FaceRec = struct {
 	num_faces: i64,
 	face_index: i64,
 
-	face_flags: i64,
-	style_flags: i64,
+	face_flags: u64,
+	style_flags: u64,
 
 	num_glyphs: i64,
 
@@ -212,11 +212,57 @@ export type FT_FaceRec = struct {
 	internal: FT_Face_Internal,
 };
 
+export type FT_Face_Flag = enum u64 {
+	FT_FACE_FLAG_SCALABLE = 0,
+	FT_FACE_FLAG_FIXED_SIZES = 1u64 << 1,
+	FT_FACE_FLAG_FIXED_WIDTH = 1u64 << 2,
+	FT_FACE_FLAG_SFNT = 1u64 << 3,
+	FT_FACE_FLAG_HORIZONTAL = 1u64 << 4,
+	FT_FACE_FLAG_VERTICAL = 1u64 << 5,
+	FT_FACE_FLAG_KERNING = 1u64 << 6,
+	FT_FACE_FLAG_FAST_GLYPHS = 1u64 << 7,
+	FT_FACE_FLAG_MULTIPLE_MASTERS = 1u64 << 8,
+	FT_FACE_FLAG_GLYPH_NAMES = 1u64 << 9,
+	FT_FACE_FLAG_EXTERNAL_STREAM = 1u64 << 10,
+	FT_FACE_FLAG_HINTER = 1u64 << 11,
+	FT_FACE_FLAG_CID_KEYED = 1u64 << 12,
+	FT_FACE_FLAG_TRICKY = 1u64 << 13,
+	FT_FACE_FLAG_COLOR = 1u64 << 14,
+	FT_FACE_FLAG_VARIATION = 1u64 << 15,
+	FT_FACE_FLAG_SVG = 1u64 << 16,
+	FT_FACE_FLAG_SBIX = 1u64 << 17,
+	FT_FACE_FLAG_SBIX_OVERLAY = 1u64 << 18,
+};
+
+export type FT_Load_Flag = enum u64 {
+	FT_LOAD_DEFAULT = 0,
+	FT_LOAD_NO_SCALE = 1u64 << 0,
+	FT_LOAD_NO_HINTING = 1u64 << 1,
+	FT_LOAD_RENDER = 1u64 << 2,
+	FT_LOAD_NO_BITMAP = 1u64 << 3,
+	FT_LOAD_VERTICAL_LAYOUT = 1u64 << 4,
+	FT_LOAD_FORCE_AUTOHINT = 1u64 << 5,
+	FT_LOAD_CROP_BITMAP = 1u64 << 6,
+	FT_LOAD_PEDANTIC = 1u64 << 7,
+	FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1u64 << 9,
+	FT_LOAD_NO_RECURSE = 1u64 << 10,
+	FT_LOAD_IGNORE_TRANSFORM = 1u64 << 11,
+	FT_LOAD_MONOCHROME = 1u64 << 12,
+	FT_LOAD_LINEAR_DESIGN = 1u64 << 13,
+	FT_LOAD_SBITS_ONLY = 1u64 << 14,
+	FT_LOAD_NO_AUTOHINT = 1u64 << 15,
+	FT_LOAD_COLOR = 1u64 << 20,
+	FT_LOAD_COMPUTE_METRICS = 1u64 << 21,
+	FT_LOAD_BITMAP_METRICS_ONLY = 1u64 << 22,
+	FT_LOAD_ADVANCE_ONLY = 1u64 << 8,
+	FT_LOAD_SVG_ONLY = 1u64 << 23,
+};
+
 export @symbol("FT_Init_FreeType") fn FT_Init_FreeType(
 	alibrary: *FT_Library,
 ) FT_Error;
 
-export @symbol ("FT_Done_FreeType") fn FT_Done_FreeType(
+export @symbol("FT_Done_FreeType") fn FT_Done_FreeType(
 	library: FT_Library,
 ) FT_Error;
 
@@ -235,6 +281,23 @@ export fn FT_New_Face(
 	return _FT_New_Face(library, strings::to_c(filepathname), face_index, aface);
 };
 
-export @symbol ("FT_Done_Face") fn FT_Done_Face(
+export @symbol("FT_Done_Face") fn FT_Done_Face(
 	face: FT_Face,
+) FT_Error;
+
+export @symbol("FT_Set_Pixel_Sizes") fn FT_Set_Pixel_Sizes(
+	face: FT_Face,
+	pixel_width: u32,
+	pixel_height: u32,
+) FT_Error;
+
+export fn FT_Is_Scalable(face: FT_Face) bool = {
+	const f = face as *FT_FaceRec;
+	return ~(f.face_flags & FT_Face_Flag::FT_FACE_FLAG_SCALABLE: u64) == 0;
+};
+
+export @symbol("FT_Load_Char") fn FT_Load_Char(
+	face: FT_Face,
+	char_code: u64,
+	load_flags: u64,
 ) FT_Error;
