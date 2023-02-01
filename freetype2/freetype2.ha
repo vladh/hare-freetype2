@@ -75,16 +75,35 @@ export type FT_Glyph_Format = enum {
 	FT_GLYPH_FORMAT_PLOTTER,
 	FT_GLYPH_FORMAT_SVG,
 };
+export type FT_Pixel_Mode = enum {
+	FT_PIXEL_MODE_NONE,
+	FT_PIXEL_MODE_MONO,
+	FT_PIXEL_MODE_GRAY,
+	FT_PIXEL_MODE_GRAY2,
+	FT_PIXEL_MODE_GRAY4,
+	FT_PIXEL_MODE_LCD,
+	FT_PIXEL_MODE_LCD_V,
+	FT_PIXEL_MODE_BGRA,
+	FT_PIXEL_MODE_MAX,
+};
+export type FT_Render_Mode = enum {
+	FT_RENDER_MODE_NORMAL,
+	FT_RENDER_MODE_LIGHT,
+	FT_RENDER_MODE_MONO,
+	FT_RENDER_MODE_LCD,
+	FT_RENDER_MODE_LCD_V,
+	FT_RENDER_MODE_SDF,
+	FT_RENDER_MODE_MAX,
+};
 export type FT_Bitmap = struct {
 	rows: u32,
 	width: u32,
 	pitch: i32,
-	buffer: *char,
+	buffer: *u8,
 	num_grays: u8,
-	pixel_mode: char,
+	pixel_mode: u8,
 	palette_mode: char,
 	palette: nullable *void,
-
 };
 export type FT_Outline = struct {
 	n_contours: i16,
@@ -166,49 +185,34 @@ export type FT_Face_Internal = nullable *void;
 export type FT_FaceRec = struct {
 	num_faces: i64,
 	face_index: i64,
-
 	face_flags: u64,
 	style_flags: u64,
-
 	num_glyphs: i64,
-
 	family_name: *char,
 	style_name: *char,
-
 	num_fixed_sizes: i32,
 	available_sizes: *FT_Bitmap_Size,
-
 	num_charmaps: i32,
 	charmaps: *FT_CharMap,
-
 	generic: FT_Generic,
-
 	bbox: FT_BBox,
-
 	units_per_EM: u16,
 	ascender: i16,
 	descender: i16,
 	height: i16,
-
 	max_advance_width: i16,
 	max_advance_height: i16,
-
 	underline_position: i16,
 	underline_thickness: i16,
-
 	glyph: FT_GlyphSlot,
 	sz: size,
 	charmap: FT_CharMap,
-
 	driver: FT_Driver,
 	memory: FT_Memory,
 	stream: FT_Stream,
-
 	sizes_list: FT_ListRec,
-
 	autohint: FT_Generic,
 	extensions: nullable *void,
-
 	internal: FT_Face_Internal,
 };
 
@@ -300,4 +304,9 @@ export @symbol("FT_Load_Char") fn FT_Load_Char(
 	face: FT_Face,
 	char_code: u64,
 	load_flags: u64,
+) FT_Error;
+
+export @symbol("FT_Render_Glyph") fn FT_Render_Glyph(
+	slot: FT_GlyphSlot,
+	render_mode: FT_Render_Mode,
 ) FT_Error;
