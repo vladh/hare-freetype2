@@ -22,7 +22,7 @@ export fn main() void = {
 	};
 
 	let slot: ft::FT_GlyphSlot = (face as *ft::FT_FaceRec).glyph;
-	const status = ft::FT_Load_Char(face, 'w', ft::FT_Load_Flag::FT_LOAD_RENDER);
+	const status = ft::FT_Load_Char(face, 'E', ft::FT_Load_Flag::FT_LOAD_RENDER);
 	if (status != 0) {
 		fmt::println("could not load char")!;
 	};
