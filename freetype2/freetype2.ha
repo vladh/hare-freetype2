@@ -1,4 +1,4 @@
-use strings;
+use types::c;
 
 export type FT_Error = int;
 export type FT_Pos = i64;
@@ -109,7 +109,7 @@ export type FT_Outline = struct {
 	n_contours: i16,
 	n_points: i16,
 	points: *FT_Vector,
-	tags: *char,
+	tags: *c::char,
 	contours: *i16,
 	flags: i32,
 };
@@ -151,7 +151,7 @@ export type FT_StreamDesc = struct {
 export type FT_Stream_IoFunc = fn(
 	stream: FT_Stream,
 	offset_: u64,
-	buffer: *char,
+	buffer: *c::char,
 	count: u64
 ) u64;
 
@@ -159,7 +159,7 @@ export type FT_Stream_CloseFunc = fn(
 	stream: FT_Stream,
 ) void;
 export type FT_StreamRec = struct {
-	base: *char,
+	base: *c::char,
 	sz: u64,
 	pos: u64,
 	descriptor: FT_StreamDesc,
@@ -167,8 +167,8 @@ export type FT_StreamRec = struct {
 	read: *FT_Stream_IoFunc,
 	close: *FT_Stream_CloseFunc,
 	memory: FT_Memory,
-	cursor: *char,
-	limit: *char,
+	cursor: *c::char,
+	limit: *c::char,
 };
 export type FT_List = nullable *FT_ListRec;
 export type FT_ListNode = nullable *FT_ListNodeRec;
@@ -188,8 +188,8 @@ export type FT_FaceRec = struct {
 	face_flags: u64,
 	style_flags: u64,
 	num_glyphs: i64,
-	family_name: *char,
-	style_name: *char,
+	family_name: *c::char,
+	style_name: *c::char,
 	num_fixed_sizes: i32,
 	available_sizes: *FT_Bitmap_Size,
 	num_charmaps: i32,
@@ -272,7 +272,7 @@ export @symbol("FT_Done_FreeType") fn FT_Done_FreeType(
 
 @symbol("FT_New_Face") fn _FT_New_Face(
 	library: FT_Library,
-	filepathname: *const char,
+	filepathname: *const c::char,
 	face_index: i64,
 	aface: *FT_Face,
 ) FT_Error;
@@ -282,7 +282,9 @@ export fn FT_New_Face(
 	face_index: i64,
 	aface: *FT_Face,
 ) FT_Error = {
-	return _FT_New_Face(library, strings::to_c(filepathname), face_index, aface);
+	let filepathname = c::fromstr(filepathname);
+	defer free(filepathname);
+	return _FT_New_Face(library, filepathname, face_index, aface);
 };
 
 export @symbol("FT_Done_Face") fn FT_Done_Face(
