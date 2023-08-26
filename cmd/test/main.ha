@@ -11,9 +11,10 @@ export fn main() void = {
 	let face: ft::FT_Face = null;
 	const status = ft::FT_New_Face(library, FONT_PATH, 0, &face);
 	if (status != 0) {
-		fmt::printfln("could not load face: (path {}) (status {})",
-			FONT_PATH, status: int)!;
+		fmt::fatalf("could not load face: (path {}) (status {})",
+			FONT_PATH, status: int);
 	};
+	defer ft::FT_Done_Face(face);
 
 	ft::FT_Set_Pixel_Sizes(face, 0, FONT_SIZE);
 
@@ -26,6 +27,4 @@ export fn main() void = {
 	if (status != 0) {
 		fmt::println("could not load char")!;
 	};
-
-	ft::FT_Done_Face(face);
 };
