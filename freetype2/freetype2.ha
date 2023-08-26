@@ -40,9 +40,9 @@ export type FT_CharMapRec = struct {
 	platform_id: u16,
 	encoding_id: u16,
 };
-export type FT_Generic_Finalizer = fn(object: nullable *void) void;
+export type FT_Generic_Finalizer = fn(object: nullable *opaque) void;
 export type FT_Generic = struct {
-	data: nullable *void,
+	data: nullable *opaque,
 	finalizer: *FT_Generic_Finalizer,
 };
 export type FT_BBox = struct {
@@ -103,7 +103,7 @@ export type FT_Bitmap = struct {
 	num_grays: u16,
 	pixel_mode: u8,
 	palette_mode: u8,
-	palette: nullable *void,
+	palette: nullable *opaque,
 };
 export type FT_Outline = struct {
 	n_contours: i16,
@@ -113,8 +113,8 @@ export type FT_Outline = struct {
 	contours: *i16,
 	flags: i32,
 };
-export type FT_SubGlyph = nullable *void;
-export type FT_Slot_Internal = nullable *void;
+export type FT_SubGlyph = nullable *opaque;
+export type FT_Slot_Internal = nullable *opaque;
 export type FT_GlyphSlotRec = struct {
 	library: FT_Library,
 	face: FT_Face,
@@ -132,21 +132,21 @@ export type FT_GlyphSlotRec = struct {
 	outline: FT_Outline,
 	num_subglyphs: u32,
 	subglyphs: FT_SubGlyph,
-	control_data: nullable *void,
+	control_data: nullable *opaque,
 	control_len: i64,
 	lsb_delta: FT_Pos,
 	rsb_delta: FT_Pos,
-	other: nullable *void,
+	other: nullable *opaque,
 	internal: FT_Slot_Internal,
 };
-export type FT_Library = nullable *void;
+export type FT_Library = nullable *opaque;
 export type FT_Face = nullable *FT_FaceRec;
-export type FT_Driver = nullable *void;
-export type FT_Memory = nullable *void;
+export type FT_Driver = nullable *opaque;
+export type FT_Memory = nullable *opaque;
 export type FT_Stream = nullable *FT_StreamRec;
 export type FT_StreamDesc = struct {
 	value: i64,
-	pointer: nullable *void,
+	pointer: nullable *opaque,
 };
 export type FT_Stream_IoFunc = fn(
 	stream: FT_Stream,
@@ -175,13 +175,13 @@ export type FT_ListNode = nullable *FT_ListNodeRec;
 export type FT_ListNodeRec = struct {
 	prev: FT_ListNode,
 	next: FT_ListNode,
-	data: nullable *void,
+	data: nullable *opaque,
 };
 export type FT_ListRec = struct {
 	head: FT_ListNode,
 	tail: FT_ListNode,
 };
-export type FT_Face_Internal = nullable *void;
+export type FT_Face_Internal = nullable *opaque;
 export type FT_FaceRec = struct {
 	num_faces: i64,
 	face_index: i64,
@@ -212,7 +212,7 @@ export type FT_FaceRec = struct {
 	stream: FT_Stream,
 	sizes_list: FT_ListRec,
 	autohint: FT_Generic,
-	extensions: nullable *void,
+	extensions: nullable *opaque,
 	internal: FT_Face_Internal,
 };
 
